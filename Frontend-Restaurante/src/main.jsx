@@ -7,34 +7,23 @@ import Carta from "./pages/Carta.jsx";
 import Pedidos from "./pages/Pedidos.jsx";
 import LoginClientes from "./pages/LoginClientes.jsx";
 import Logout from "./pages/Logout.jsx";
+import Admin from "./pages/Admin.jsx"; // Importa la página de Admin
+import { AuthProvider } from "./context/AuthContext"; // Importa el proveedor de autenticación
 import "./index.css";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    errorElement: <NotFoundPage />,
-  },
-  {
-    path: "/carta",
-    element: <Carta />,
-  },
-  {
-    path: "/pedidos",
-    element: <Pedidos />,
-  },
-  {
-    path: "/clientes/login",
-    element: <LoginClientes />,
-  },
-  {
-    path: "/clientes/logout",
-    element: <Logout />,
-  },
+  { path: "/", element: <App />, errorElement: <NotFoundPage /> },
+  { path: "/carta", element: <Carta /> },
+  { path: "/pedidos", element: <Pedidos /> },
+  { path: "/clientes/login", element: <LoginClientes /> },
+  { path: "/clientes/logout", element: <Logout /> },
+  { path: "/admin", element: <Admin /> }, // Añade esta línea
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>
 );

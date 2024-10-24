@@ -60,9 +60,10 @@ router.get("/:id", autorizacion, async (req, res, next) => {
   });
 });
 
-// * Crear nuevo cliente
+// Crear nuevo cliente
 router.post("/", async (req, res, next) => {
-  const { nombre, email, password } = req.body;
+  const { nombre, email, password, isAdmin } = req.body; // Añadimos isAdmin aquí
+
   let existeCliente;
   try {
     existeCliente = await Cliente.findOne({ email: email });
@@ -85,11 +86,14 @@ router.post("/", async (req, res, next) => {
       err.code = 500;
       return next(err);
     }
+
     const nuevoCliente = new Cliente({
       nombre,
       email,
       password: hashedPassword,
+      isAdmin: isAdmin || false // Asegúrate de que isAdmin se guarda correctamente
     });
+
     try {
       await nuevoCliente.save();
     } catch (error) {
@@ -97,13 +101,14 @@ router.post("/", async (req, res, next) => {
       err.code = 500;
       return next(err);
     }
+
     let token;
     try {
       token = jwt.sign(
         {
           userId: nuevoCliente.id,
           email: nuevoCliente.email,
-          isAdmin: nuevoCliente.isAdmin || false, // Añadimos isAdmin al token
+          isAdmin: nuevoCliente.isAdmin // Añadimos isAdmin al token
         },
         "clave_secreta",
         { expiresIn: "2h" }
@@ -113,17 +118,19 @@ router.post("/", async (req, res, next) => {
       err.code = 500;
       return next(error);
     }
+
     res.status(201).json({
       userId: nuevoCliente.id,
       email: nuevoCliente.email,
       token: token,
+      isAdmin: nuevoCliente.isAdmin // Incluimos isAdmin en la respuesta
     });
   }
 });
 
-// * Login de cliente o admin
 router.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
+
   let clienteExiste;
   try {
     clienteExiste = await Cliente.findOne({ email: email });
@@ -132,29 +139,26 @@ router.post("/login", async (req, res, next) => {
     err.code = 500;
     return next(err);
   }
+
   if (!clienteExiste) {
-    const err = new Error(
-      "No se ha podido identificar el cliente. Credenciales erróneas"
-    );
+    const err = new Error("No se ha podido identificar el cliente. Credenciales erróneas");
     err.code = 422;
     return next(err);
   } else {
-    let esValidoPassword = false;
-    esValidoPassword = bcrypt.compareSync(password, clienteExiste.password);
-    if (esValidoPassword === false) {
-      const error = new Error(
-        "No se ha podido identificar al usuario. Credenciales erróneas"
-      );
+    let esValidoPassword = bcrypt.compareSync(password, clienteExiste.password);
+    if (!esValidoPassword) {
+      const error = new Error("No se ha podido identificar al usuario. Credenciales erróneas");
       error.code = 401;
       return next(error);
     }
+
     let token;
     try {
       token = jwt.sign(
         {
           userId: clienteExiste.id,
           email: clienteExiste.email,
-          isAdmin: clienteExiste.isAdmin || false, // Añadimos isAdmin al token
+          isAdmin: clienteExiste.isAdmin || false // Añadimos isAdmin al token
         },
         "clave_secreta",
         { expiresIn: "2h" }
@@ -164,12 +168,13 @@ router.post("/login", async (req, res, next) => {
       err.code = 500;
       return next(error);
     }
+
     res.status(201).json({
       mensaje: "El cliente ha entrado con éxito en el sistema",
       userId: clienteExiste.id,
       email: clienteExiste.email,
       token: token,
-      isAdmin: clienteExiste.isAdmin || false, // Devolvemos isAdmin al frontend
+      isAdmin: clienteExiste.isAdmin || false 
     });
   }
 });
@@ -178,7 +183,6 @@ router.post("/login", async (req, res, next) => {
 router.put("/:id", autorizacion, async (req, res, next) => {
   const idCliente = req.params.id;
 
-  // Verificar si es admin o si está modificando su propio perfil
   if (req.userData.userId !== idCliente && !req.userData.isAdmin) {
     return res.status(403).json({ mensaje: "Acceso denegado." });
   }
@@ -209,7 +213,6 @@ router.put("/:id", autorizacion, async (req, res, next) => {
 
 // * Eliminar cliente (solo admin)
 router.delete("/:id", autorizacion, async (req, res, next) => {
-  // Solo los administradores pueden eliminar clientes
   if (!req.userData.isAdmin) {
     return res.status(403).json({ mensaje: "Acceso denegado. Solo admin." });
   }

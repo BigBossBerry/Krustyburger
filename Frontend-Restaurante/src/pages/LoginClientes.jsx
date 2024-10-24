@@ -2,20 +2,25 @@ import { useForm } from "react-hook-form";
 import axios from 'axios';
 import Navbar from "../components/Navbar.jsx";
 import { useState } from "react";
+import { useAuth } from '../context/AuthContext'; // Importa el contexto de autenticación
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import './LoginClientes.css';
-const LoginClientes = ({ setUserType }) => {
+
+const LoginClientes = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [isRegistering, setIsRegistering] = useState(false); 
+  const [isRegistering, setIsRegistering] = useState(false);
+  const { setUserType } = useAuth(); // Usa el contexto de autenticación
+  const navigate = useNavigate(); // Usa useNavigate para redirigir
 
   const gestorFormulario = async (data) => {
     console.log("Formulario enviado:", data);
     try {
       if (isRegistering) {
-
         await axios.post(`${import.meta.env.VITE_REACT_BACKEND_URL}/clientes`, data)
           .then((res) => {
             console.log("Cliente registrado");
-            setUserType('registered'); 
+            setUserType('registered');
+            navigate('/'); // Redirige a la página de inicio después del registro
           })
           .catch((err) => console.log(err));
       } else {
@@ -27,11 +32,13 @@ const LoginClientes = ({ setUserType }) => {
           const user = res.data;
           console.log("Login correcto", user);
           localStorage.setItem("cliente", JSON.stringify(user));
-          
+
           if (user.isAdmin) {
             setUserType('admin');
+            navigate('/admin'); // Redirige a la página de admin
           } else {
             setUserType('registered');
+            navigate('/'); // Redirige a la página de inicio
           }
         })
         .catch((err) => console.log(err));
@@ -68,7 +75,7 @@ const LoginClientes = ({ setUserType }) => {
             })}
           />
           {errors.email && <span>{errors.email.message}</span>}
-          
+
           <input
             type="password"
             name="password"
@@ -82,9 +89,9 @@ const LoginClientes = ({ setUserType }) => {
             })}
           />
           {errors.password && <span>{errors.password.message}</span>}
-          
+
           <button type="submit">{isRegistering ? "Registrar" : "Acceder"}</button>
-          
+
           <p onClick={() => setIsRegistering(!isRegistering)}>
             {isRegistering ? "¿Ya tienes una cuenta? Accede aquí" : "¿No tienes cuenta? Regístrate"}
           </p>
@@ -95,4 +102,3 @@ const LoginClientes = ({ setUserType }) => {
 };
 
 export default LoginClientes;
-

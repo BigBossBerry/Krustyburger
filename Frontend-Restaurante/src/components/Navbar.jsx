@@ -3,7 +3,8 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const logoUrl = "https://res.cloudinary.com/bigbossberry/image/upload/v1729699637/logo_copia_kw6qe1.png";
-  let isLoggedIn = false;
+  const isLoggedIn = false; 
+  const isAdmin = true; 
 
   return (
     <header className="navbar-container">
@@ -23,9 +24,11 @@ const Navbar = () => {
         </NavLink>
         {isLoggedIn && (
           <>
-            <NavLink className={({ isActive }) => (isActive ? "navlink active" : "navlink")} to="/pedidos">
-              Pedidos
-            </NavLink>
+            {isAdmin && (
+              <NavLink className={({ isActive }) => (isActive ? "navlink active" : "navlink")} to="/admin">
+                Admin
+              </NavLink>
+            )}
             <NavLink className={({ isActive }) => (isActive ? "navlink active" : "navlink")} to="/clientes/logout">
               Logout
             </NavLink>
@@ -42,4 +45,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 

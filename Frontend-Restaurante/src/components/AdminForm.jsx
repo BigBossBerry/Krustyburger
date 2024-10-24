@@ -9,23 +9,20 @@ const AdminForm = () => {
   const [categoria, setCategoria] = useState('Hamburguesas');
   const [urlImagen, setUrlImagen] = useState('');
   const [subiendo, setSubiendo] = useState(false);
-
   const categorias = ["Hamburguesas", "Complementos", "Bebidas", "Postres"];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubiendo(true);
-
     try {
       const nuevoProducto = {
         nombre,
         descripcion,
         precio,
         categoria,
-        foto: urlImagen, 
+        foto: urlImagen,
       };
-
-      await axios.post('/api/productos', nuevoProducto); 
+      await axios.post('/api/productos', nuevoProducto);
       alert('Producto subido correctamente');
       setNombre('');
       setDescripcion('');
@@ -86,9 +83,7 @@ const AdminForm = () => {
             ))}
           </select>
         </label>
-
-        <Imagenes onUploadComplete={handleImageUpload} />
-
+        <Imagenes setUrlImagen={setUrlImagen} onUploadComplete={handleImageUpload} />
         <button type="submit" disabled={subiendo || !urlImagen}>
           {subiendo ? 'Subiendo...' : 'Subir Producto'}
         </button>

@@ -6,7 +6,7 @@ const clienteSchema = new mongoose.Schema({
   password: { type: String, required: true },
   phone: String,
   address: String,
-  isAdmin: { type: Boolean, default: false },  // Nuevo campo para admin
+  isAdmin: { type: Boolean, default: false }, 
   pedidos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Pedido' }], 
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now }

@@ -1,9 +1,12 @@
-
-import "./Admin.css";
 import React from 'react';
 import Navbar from '../components/Navbar';
 import AdminForm from '../components/AdminForm';
-const Admin = ({ userType }) => {
+import { useAuth } from '../context/AuthContext'; // Importa el contexto de autenticación
+import "./Admin.css";
+
+const Admin = () => {
+  const { userType } = useAuth(); // Usa el contexto de autenticación
+
   if (userType !== 'admin') {
     return <p>No tienes acceso a esta página.</p>;
   }
