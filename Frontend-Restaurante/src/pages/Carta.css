@@ -1,0 +1,54 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #6a0dad; /* Color púrpura */
+  background-image: url('https://res.cloudinary.com/bigbossberry/image/upload/v1729685861/logo_ienduq.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center top;
+  color: #ffffff; /* Color del texto */
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #6a0dad; /* Color púrpura */
+  background-image: url('https://res.cloudinary.com/bigbossberry/image/upload/v1729685861/logo_ienduq.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center top;
+  color: #ffffff; /* Color del texto */
+}
+
+.carta-container {
+  padding: 0px 20px 20px; /* Añadir suficiente padding superior */
+  text-align: center;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 16px;
+  margin-top: 20px; /* Añadir espacio superior */
+}
+
+h1 {
+  color: #ffcc00; /* Color llamativo para el título */
+  margin-top: 150px; /* Añadir espacio superior */
+}
+
+p {
+  color: #ffffff; /* Color de la descripción */
+  margin: 0;
+  margin-top: 30px ;
+  padding: 10px 0; /* Añadir espacio superior e inferior */
+}
+
+h2 {
+  margin: 24px 0;
+  text-align: center;
+  color: #390564; /* Color llamativo para las categorías */
+}

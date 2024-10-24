@@ -1,0 +1,62 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #6a0dad; /* Color púrpura de fondo para tu página */
+  background-image: url('https://res.cloudinary.com/bigbossberry/image/upload/v1729685861/fonde3_jmmv3d.jpg'); /* URL de la imagen de fondo */
+  background-size: cover; /* Asegura que la imagen cubra toda la pantalla */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-position: center top; /* Centra la imagen */
+  height: 100ch;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.inputs {
+  margin-bottom: 20px;
+}
+
+.inputs input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

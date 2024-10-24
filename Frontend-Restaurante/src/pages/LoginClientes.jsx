@@ -1,0 +1,98 @@
+import { useForm } from "react-hook-form";
+import axios from 'axios';
+import Navbar from "../components/Navbar.jsx";
+import { useState } from "react";
+import './LoginClientes.css';
+const LoginClientes = ({ setUserType }) => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [isRegistering, setIsRegistering] = useState(false); 
+
+  const gestorFormulario = async (data) => {
+    console.log("Formulario enviado:", data);
+    try {
+      if (isRegistering) {
+
+        await axios.post(`${import.meta.env.VITE_REACT_BACKEND_URL}/clientes`, data)
+          .then((res) => {
+            console.log("Cliente registrado");
+            setUserType('registered'); 
+          })
+          .catch((err) => console.log(err));
+      } else {
+        await axios.post(`${import.meta.env.VITE_REACT_BACKEND_URL}/clientes/login`, {
+          email: data.email,
+          password: data.password,
+        })
+        .then((res) => {
+          const user = res.data;
+          console.log("Login correcto", user);
+          localStorage.setItem("cliente", JSON.stringify(user));
+          
+          if (user.isAdmin) {
+            setUserType('admin');
+          } else {
+            setUserType('registered');
+          }
+        })
+        .catch((err) => console.log(err));
+      }
+    } catch (err) {
+      console.error("Error en el acceso", err);
+    }
+  };
+
+  return (
+    <div className="Form">
+      <Navbar />
+      <div className="inputs">
+        <form className="formita" onSubmit={handleSubmit(gestorFormulario)}>
+          {isRegistering && (
+            <input
+              type="text"
+              placeholder="Nombre de Usuario"
+              {...register("nombre", {
+                required: "Requerido",
+              })}
+            />
+          )}
+          <input
+            type="text"
+            name="email"
+            placeholder="email@email.com"
+            {...register("email", {
+              required: "Requerido",
+              pattern: {
+                value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                message: "Formato de correo incorrecto",
+              },
+            })}
+          />
+          {errors.email && <span>{errors.email.message}</span>}
+          
+          <input
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+            {...register("password", {
+              required: "Requerido",
+              minLength: {
+                value: 6,
+                message: "Mínimo de 6 caracteres",
+              },
+            })}
+          />
+          {errors.password && <span>{errors.password.message}</span>}
+          
+          <button type="submit">{isRegistering ? "Registrar" : "Acceder"}</button>
+          
+          <p onClick={() => setIsRegistering(!isRegistering)}>
+            {isRegistering ? "¿Ya tienes una cuenta? Accede aquí" : "¿No tienes cuenta? Regístrate"}
+          </p>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default LoginClientes;
+
