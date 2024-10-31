@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const logoUrl = "https://res.cloudinary.com/bigbossberry/image/upload/v1729699637/logo_copia_kw6qe1.png";
-  const isLoggedIn = false; 
-  const isAdmin = true; 
+  const { userType, isLoggedIn, isAdmin } = useAuth(); 
 
   return (
     <header className="navbar-container">
@@ -13,7 +13,7 @@ const Navbar = () => {
       </div>
       <div className="title">Krusty Burger</div>
       <nav className="navigation">
-        <NavLink className={({ isActive }) => (isActive ? "navlink active" : "navlink")} to="/">
+        <NavLink className={({ isActive }) => (isActive ? "navlink active" : "navlink")} to="/Inicio">
           Inicio
         </NavLink>
         <NavLink className={({ isActive }) => (isActive ? "navlink active" : "navlink")} to="/carta">
@@ -45,5 +45,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-

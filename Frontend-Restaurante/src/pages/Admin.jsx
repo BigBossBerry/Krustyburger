@@ -12,11 +12,13 @@ const Admin = () => {
   }
 
   return (
-    <div>
+    <div className="admin-container">
       <Navbar userType={userType} />
-      <h1>Panel de Administración</h1>
-      <p>Actualización de productos.</p>
-      <AdminForm userType={userType} />
+      <div className="contenido-admin">
+        <h1 className="titulo-admin">Panel de Administración</h1>
+        <p>Actualización de productos.</p>
+        <AdminForm userType={userType} />
+      </div>
     </div>
   );
 };

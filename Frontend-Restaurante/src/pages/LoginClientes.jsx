@@ -9,20 +9,25 @@ import './LoginClientes.css';
 const LoginClientes = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [isRegistering, setIsRegistering] = useState(false);
-  const { setUserType } = useAuth(); // Usa el contexto de autenticación
+  const [message, setMessage] = useState(''); // Estado para los mensajes
+  const { setUserType, setIsAdmin } = useAuth(); // Usa el contexto de autenticación
   const navigate = useNavigate(); // Usa useNavigate para redirigir
 
   const gestorFormulario = async (data) => {
-    console.log("Formulario enviado:", data);
+    setMessage('Autenticando...');
     try {
       if (isRegistering) {
         await axios.post(`${import.meta.env.VITE_REACT_BACKEND_URL}/clientes`, data)
           .then((res) => {
-            console.log("Cliente registrado");
+            setMessage('Usuario registrado. Bienvenido/a a nuestra página.');
             setUserType('registered');
-            navigate('/'); // Redirige a la página de inicio después del registro
+            setIsAdmin(false);
+            setTimeout(() => navigate('/'), 3000); // Redirige después de 3 segundos
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            setMessage('Error al registrar el usuario. Inténtelo de nuevo.');
+            console.log(err);
+          });
       } else {
         await axios.post(`${import.meta.env.VITE_REACT_BACKEND_URL}/clientes/login`, {
           email: data.email,
@@ -30,20 +35,27 @@ const LoginClientes = () => {
         })
         .then((res) => {
           const user = res.data;
-          console.log("Login correcto", user);
+          setMessage(`Bienvenido/a ${user.nombre}`);
           localStorage.setItem("cliente", JSON.stringify(user));
 
           if (user.isAdmin) {
             setUserType('admin');
-            navigate('/admin'); // Redirige a la página de admin
+            setIsAdmin(true);
+            setTimeout(() => navigate('/admin'), 3000); // Redirige después de 3 segundos
           } else {
             setUserType('registered');
-            navigate('/'); // Redirige a la página de inicio
+            setIsAdmin(false);
+            setTimeout(() => navigate('/'), 3000); // Redirige después de 3 segundos
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          setMessage('Usuario no encontrado. Por favor, regístrese.');
+          setIsRegistering(true); // Abre el formulario de registro
+          console.log(err);
+        });
       }
     } catch (err) {
+      setMessage('Error en el acceso. Inténtelo de nuevo.');
       console.error("Error en el acceso", err);
     }
   };
@@ -96,6 +108,7 @@ const LoginClientes = () => {
             {isRegistering ? "¿Ya tienes una cuenta? Accede aquí" : "¿No tienes cuenta? Regístrate"}
           </p>
         </form>
+        {message && <p className="message">{message}</p>}
       </div>
     </div>
   );

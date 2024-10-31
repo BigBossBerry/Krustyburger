@@ -1,3 +1,4 @@
+// src/pages/Carta.jsx
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import ProductoCard from '../components/ProductoCard';
@@ -10,15 +11,22 @@ const Carta = ({ userType }) => {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const response = await fetch('/api/productos');
+        const response = await fetch(`${import.meta.env.VITE_REACT_BACKEND_URL}/productos`);
         const data = await response.json();
-        setProductos(data.productos);
+
+        if (data && data.productos) {
+          setProductos(data.productos);
+        } else {
+          console.error('Datos de productos no encontrados:', data);
+        }
+        
         setLoading(false);
       } catch (error) {
         console.error('Error al cargar los productos:', error);
         setLoading(false);
       }
     };
+
     fetchProductos();
   }, []);
 
@@ -39,9 +47,13 @@ const Carta = ({ userType }) => {
           <section key={categoria}>
             <h2 className="section-title">{categoria}</h2>
             <div className="grid">
-              {productosFiltrados.map((producto) => (
-                <ProductoCard key={producto._id} producto={producto} />
-              ))}
+              {productosFiltrados.length > 0 ? (
+                productosFiltrados.map((producto) => (
+                  <ProductoCard key={producto._id} producto={producto} />
+                ))
+              ) : (
+                <p>No hay productos en esta categoría.</p>
+              )}
             </div>
           </section>
         );

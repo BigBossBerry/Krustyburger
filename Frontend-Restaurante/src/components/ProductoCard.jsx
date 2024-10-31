@@ -1,17 +1,20 @@
+// src/components/ProductoCard.jsx
 import React from 'react';
-import './ProductoCard.css'; 
+import './ProductoCard.css';
+
 const ProductoCard = ({ producto }) => {
   return (
-    <div className="card">
-      <div className="card-image">
-        <img src={producto.foto} alt={producto.nombre} />
+    <div className="producto-card">
+      <div className="producto-imagen-container">
+        <img src={producto.foto} alt={producto.nombre} className="producto-imagen" />
       </div>
-      <div className="card-text">
-        <h2>{producto.nombre}</h2>
-        <p>{producto.descripcion}</p>
-        <div className="card-price">
-          <p>${producto.precio}</p>
+      <div className="producto-info">
+        <div className="producto-header">
+          <h3 className="producto-nombre">{producto.nombre}</h3>
+          <div className="puntos"></div>
+          <p className="producto-precio">{producto.precio}€</p>
         </div>
+        <p className="producto-descripcion">{producto.descripcion}</p>
       </div>
     </div>
   );

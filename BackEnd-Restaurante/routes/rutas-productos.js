@@ -37,15 +37,14 @@ router.get("/:categoria", async (req, res, next) => {
 });
 
 // * Crear nuevo producto
-router.post("/", autorizacion, async (req, res, next) => {
-  const { nombre, descripcion, precio, categoria, disponible } = req.body;
-
+router.post("/", async (req, res, next) => {
+  const { nombre, descripcion, precio, categoria, foto } = req.body; 
   const nuevoProducto = new Producto({
     nombre,
     descripcion,
     precio,
     categoria,
-    disponible,
+    foto,
   });
 
   try {
@@ -63,14 +62,15 @@ router.post("/", autorizacion, async (req, res, next) => {
   }
 });
 
+
 // * Modificar un producto
-router.put("/:id", autorizacion, async (req, res, next) => {
-  const { nombre, descripcion, precio, categoria, disponible } = req.body;
+router.put("/:id",  async (req, res, next) => {
+  const { nombre, descripcion, precio, categoria, foto, disponible, } = req.body;
 
   try {
     const producto = await Producto.findByIdAndUpdate(
       req.params.id,
-      { nombre, descripcion, precio, categoria, disponible },
+      { nombre, descripcion, precio, categoria, foto },
       { new: true, runValidators: true }
     );
     res.status(200).json({ mensaje: "Producto actualizado", producto });
@@ -85,7 +85,7 @@ router.put("/:id", autorizacion, async (req, res, next) => {
 });
 
 // * Eliminar un producto
-router.delete("/:id", autorizacion, async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
   try {
     await Producto.findByIdAndDelete(req.params.id);
     res.status(200).json({ mensaje: "Producto eliminado" });

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Imagenes from './Imagenes'; // Componente de subida de imágenes
+import Imagenes from './Imagenes';
 
 const AdminForm = () => {
   const [nombre, setNombre] = useState('');
@@ -10,7 +10,7 @@ const AdminForm = () => {
   const [urlImagen, setUrlImagen] = useState('');
   const [subiendo, setSubiendo] = useState(false);
   const categorias = ["Hamburguesas", "Complementos", "Bebidas", "Postres"];
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubiendo(true);
@@ -22,7 +22,7 @@ const AdminForm = () => {
         categoria,
         foto: urlImagen,
       };
-      await axios.post('/api/productos', nuevoProducto);
+      await axios.post(`${import.meta.env.VITE_REACT_BACKEND_URL}/productos`, nuevoProducto);
       alert('Producto subido correctamente');
       setNombre('');
       setDescripcion('');
@@ -30,7 +30,7 @@ const AdminForm = () => {
       setCategoria('Hamburguesas');
       setUrlImagen('');
     } catch (error) {
-      console.error('Error al subir el producto:', error);
+      console.error('Error al subir el producto:', error.response ? error.response.data : error.message);
       alert('Hubo un error al subir el producto.');
     } finally {
       setSubiendo(false);

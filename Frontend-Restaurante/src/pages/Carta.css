@@ -1,30 +1,57 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #6a0dad; /* Color púrpura */
-  background-image: url('https://res.cloudinary.com/bigbossberry/image/upload/v1729685861/logo_ienduq.jpg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center top;
-  color: #ffffff; /* Color del texto */
-}
+@import url('https://fonts.googleapis.com/css2?family=Simpsonfont:wght@900&display=swap');
 
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #6a0dad; /* Color púrpura */
+  background-color: #6a0dad;
   background-image: url('https://res.cloudinary.com/bigbossberry/image/upload/v1729685861/logo_ienduq.jpg');
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
+  background-attachment: fixed; 
   background-position: center top;
-  color: #ffffff; /* Color del texto */
+  color: #ffffff; 
 }
 
 .carta-container {
-  padding: 0px 20px 20px; /* Añadir suficiente padding superior */
+  padding: 0px 20px 20px; 
   text-align: center;
+}
+
+.section-title {
+  font-size: 3em;
+  margin: 0px 0;
+  text-align: center;
+  color: #ffcc00; 
+  margin-top: 150px;
+  font-weight: 800; 
+  font-family: 'Simpsonfont', sans-serif; 
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.section-content {
+  font-weight: 700; 
+  font-size: 1.5em; 
+  text-align: center;
+  margin-bottom: 40px;
+  color: #ffffff; 
+  margin: 0;
+  margin-top: 30px;
+  padding: 10px 0; 
+  background-color: rgba(0, 0, 0, 0.5); 
+  padding: 10px;
+  border-radius: 5px;
+}
+
+h2 {
+  margin: 24px 0;
+  text-align: center;
+  color: #390564; 
+  background-color: rgba(0, 0, 0, 0.5); 
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .grid {
@@ -32,23 +59,5 @@ body {
   flex-wrap: wrap;
   justify-content: space-around;
   gap: 16px;
-  margin-top: 20px; /* Añadir espacio superior */
-}
-
-h1 {
-  color: #ffcc00; /* Color llamativo para el título */
-  margin-top: 150px; /* Añadir espacio superior */
-}
-
-p {
-  color: #ffffff; /* Color de la descripción */
-  margin: 0;
-  margin-top: 30px ;
-  padding: 10px 0; /* Añadir espacio superior e inferior */
-}
-
-h2 {
-  margin: 24px 0;
-  text-align: center;
-  color: #390564; /* Color llamativo para las categorías */
+  margin-top: 20px; 
 }

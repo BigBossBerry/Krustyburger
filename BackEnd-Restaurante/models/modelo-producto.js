@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const productoSchema = new mongoose.Schema({
   nombre: { type: String, required: true },
-  descripcion: String,
+  descripcion: { type: String, required: true },
   precio: { type: Number, required: true },
   categoria: {
     type: String,
@@ -10,7 +10,6 @@ const productoSchema = new mongoose.Schema({
     required: true,
   },
   foto: { type: String},
-  disponible: { type: Boolean, default: true },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
 });
